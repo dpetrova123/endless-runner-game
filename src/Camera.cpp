@@ -30,15 +30,18 @@ glm::mat4 Camera::GetViewMatrix() {
 // parameter in the form of camera defined ENUM (to abstract it from windowing
 // systems)
 void Camera::ProcessKeyboard(Camera_Movement direction, float deltaTime) {
-  float velocity = MovementSpeed * deltaTime;
-  if (direction == FORWARD)
-    Position += Front * velocity;
-  if (direction == BACKWARD)
-    Position -= Front * velocity;
-  if (direction == LEFT)
-    Position -= Right * velocity;
-  if (direction == RIGHT)
-    Position += Right * velocity;
+    float velocity = MovementSpeed * deltaTime;
+    glm::vec3 horizontalFront = glm::normalize(glm::vec3(0.0f, 0.0f, Front.z));
+    glm::vec3 horizontalRight = glm::normalize(glm::vec3(0.0f, 0.0f, Front.z));
+
+    if (direction == FORWARD)
+        Position += horizontalFront * velocity;
+    if (direction == BACKWARD)
+        Position -= horizontalFront * velocity;
+    if (direction == LEFT)
+        Position -= horizontalRight * velocity;
+    if (direction == RIGHT)
+        Position += horizontalRight * velocity;
 }
 
 // Processes input received from a mouse input system. Expects the offset

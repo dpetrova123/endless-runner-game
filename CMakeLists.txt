@@ -18,11 +18,15 @@ endif()
 
 set(SHADERS_RELATIVE_SRC_PATH "res/shaders")
 set(TEXTURES_RELATIVE_SRC_PATH "res/textures")
+set(FONTS_RELATIVE_SRC_PATH "res/fonts")
+
+set(FREETYPE_LIBRARIES "C:/Users/Nenad/Downloads/ft2133/freetype-2.13.3/objs/x64/Debug/freetype.lib") # Update this path
 
 include_directories(include/
                     vendor/glad/include/
                     vendor/glfw/include/
                     vendor/glm/
+                    vendor/freetype/include
                     vendor/stb/)
 
 file(GLOB VENDORS_SOURCES vendor/glad/src/glad.c)
@@ -50,18 +54,25 @@ file(GLOB PROJECT_CONFIGS CMakeLists.txt
 source_group("include" FILES ${PROJECT_HEADERS})
 source_group("shaders" FILES ${PROJECT_SHADERS})
 source_group("textures" FILES ${PROJECT_TEXTURES})
+source_group("fonts" FILES ${PROJECT_FONTS})
 source_group("src" FILES ${PROJECT_SOURCES})
 source_group("vendors" FILES ${VENDORS_SOURCES})
 
 add_definitions(-DGLFW_INCLUDE_NONE
                 -DPROJECT_SOURCE_DIR=\"${PROJECT_SOURCE_DIR}\")
 
-add_executable(${PROJECT_NAME} ${PROJECT_SOURCES} ${PROJECT_HEADERS}
+add_executable(${PROJECT_NAME} ${PROJECT_SOURCES} ${PROJECT_HEADERS} ${PROJECT_FONTS}
                                ${PROJECT_SHADERS} ${PROJECT_TEXTURES} ${PROJECT_CONFIGS}
-                               ${VENDORS_SOURCES})
+                               ${VENDORS_SOURCES}
+        include/Player.hpp
+        src/Player.cpp
+        include/AABB_CollisionDetection.hpp
+        src/AABB_CollisonDetection.cpp
+        src/AABB_CollisonDetection.cpp)
 target_link_libraries(${PROJECT_NAME}
 		      glfw
                       ${GLFW_LIBRARIES} ${GLAD_LIBRARIES}
+        ${FREETYPE_LIBRARIES}
 		      )
 
 
